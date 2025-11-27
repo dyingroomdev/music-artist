@@ -53,3 +53,20 @@ export const saveSeoSettings = async (payload: { meta_title?: string; meta_descr
   const res = await api.put("/seo", payload);
   return res.data;
 };
+
+// Media library
+export interface MediaItem {
+  filename: string;
+  size: number;
+  modified_at: string;
+  url: string;
+}
+
+export const listMedia = async (): Promise<MediaItem[]> => {
+  const res = await api.get("/admin/media");
+  return res.data;
+};
+
+export const deleteMedia = async (filename: string) => {
+  await api.delete(`/admin/media/${encodeURIComponent(filename)}`);
+};

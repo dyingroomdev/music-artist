@@ -7,6 +7,7 @@ const navItems = [
   { to: "/hero-slides", label: "Hero Slides" },
   { to: "/bio", label: "Bio" },
   { to: "/shows", label: "Shows" },
+  { to: "/media", label: "Media" },
   { to: "/admin-users", label: "Admins" },
   { to: "/seo", label: "SEO" }
 ];

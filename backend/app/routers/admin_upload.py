@@ -2,6 +2,7 @@
 from __future__ import annotations
 
 import os
+from datetime import datetime
 from pathlib import Path
 
 from fastapi import APIRouter, Depends, File, HTTPException, UploadFile, Request, status
@@ -38,3 +39,35 @@ async def upload_image(
     else:
         base_url = ""
     return JSONResponse({"filename": filename, "url": f"{base_url}/media/{filename}"})
+
+
+@router.get("/media")
+async def list_media(_: str = Depends(get_current_admin_user), request: Request | None = None):
+    base_url = f"{request.url.scheme}://{request.url.netloc}" if request else ""
+    files = []
+    for item in MEDIA_DIR.iterdir():
+        if item.is_file():
+            stat = item.stat()
+            files.append(
+                {
+                    "filename": item.name,
+                    "size": stat.st_size,
+                    "modified_at": datetime.fromtimestamp(stat.st_mtime).isoformat(),
+                    "url": f"{base_url}/media/{item.name}",
+                }
+            )
+    files.sort(key=lambda x: x["filename"].lower())
+    return files
+
+
+@router.delete("/media/{filename}")
+async def delete_media(filename: str, _: str = Depends(get_current_admin_user)):
+    safe_name = os.path.basename(filename)
+    target = MEDIA_DIR / safe_name
+    if not target.exists() or not target.is_file():
+        raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail="File not found")
+    try:
+        target.unlink()
+    except OSError:
+        raise HTTPException(status_code=status.HTTP_500_INTERNAL_SERVER_ERROR, detail="Could not delete file")
+    return {"detail": "deleted"}
