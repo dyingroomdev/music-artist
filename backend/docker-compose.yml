@@ -5,8 +5,8 @@ services:
   db:
     image: postgres:15
     environment:
-      POSTGRES_USER: mehreen_user
-      POSTGRES_PASSWORD: mehreen_password
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: Cyber71ermairechudi
       POSTGRES_DB: mehreen_db
     ports:
       - "5432:5432"
@@ -17,7 +17,7 @@ services:
     build: .
     env_file: .env
     environment:
-      DATABASE_URL: postgresql+psycopg2://mehreen_user:mehreen_password@db:5432/mehreen_db
+      DATABASE_URL: postgresql+psycopg2://postgres:Cyber71ermairechudi@db:5432/mehreen_db
     ports:
       - "8000:8000"
     depends_on:
