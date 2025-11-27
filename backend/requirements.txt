@@ -1,0 +1,12 @@
+# path: backend/requirements.txt
+fastapi
+uvicorn[standard]
+sqlalchemy
+psycopg2-binary
+alembic
+pydantic-settings
+python-jose[cryptography]
+passlib[bcrypt]
+python-dotenv
+bcrypt==4.0.1
+httpx

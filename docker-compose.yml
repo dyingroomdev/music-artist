@@ -1,0 +1,60 @@
+version: "3.9"
+
+services:
+  backend:
+    build:
+      context: ./backend
+      dockerfile: Dockerfile
+    container_name: mehreen_backend
+    env_file:
+      - ./backend/.env
+    environment:
+      # Point to existing Postgres container on pg-network
+      DATABASE_URL: postgresql+psycopg2://mehreen_user:mehreen_password@some-postgres:5432/mehreen_db
+    volumes:
+      - ./backend/media:/app/media
+    ports:
+      - "9010:8000"
+    restart: unless-stopped
+    networks:
+      - pg-network
+      - default
+
+  frontend:
+    build:
+      context: ./frontend
+      dockerfile: Dockerfile
+    container_name: mehreen_frontend
+    env_file:
+      - ./frontend/.env
+    environment:
+      # Point Vite to backend in the same network
+      VITE_API_BASE_URL: http://backend:8000/api
+    ports:
+      - "9011:5173"
+    restart: unless-stopped
+    depends_on:
+      - backend
+    networks:
+      - default
+
+  admin-frontend:
+    build:
+      context: ./admin-frontend
+      dockerfile: Dockerfile
+    container_name: mehreen_admin_frontend
+    env_file:
+      - ./admin-frontend/.env
+    environment:
+      VITE_API_BASE_URL: http://backend:8000/api
+    ports:
+      - "9012:5174"
+    restart: unless-stopped
+    depends_on:
+      - backend
+    networks:
+      - default
+
+networks:
+  pg-network:
+    external: true
