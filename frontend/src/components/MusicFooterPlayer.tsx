@@ -1,10 +1,13 @@
 // path: frontend/src/components/MusicFooterPlayer.tsx
 import React, { useEffect, useRef, useState } from "react";
 
-const AUDIO_SRC = "http://localhost:8001/media/SHE%20GAANER%20PAKHI.mp3";
+// Derive media base from API base (strip trailing /api)
+const apiBase = import.meta.env.VITE_API_BASE_URL?.replace(/\/api\/?$/, "") || "";
+const MEDIA_BASE = `${apiBase}/media`;
+const AUDIO_SRC = `${MEDIA_BASE}/SHE%20GAANER%20PAKHI.mp3`;
 const TRACK_TITLE = "She Gaaner Pakhi";
 const TRACK_ARTIST = "Mehreen";
-const COVER_IMAGE = "http://localhost:8001/media/cover.heic";
+const COVER_IMAGE = `${MEDIA_BASE}/cover.heic`;
 
 export const MusicFooterPlayer: React.FC = () => {
   const audioRef = useRef<HTMLAudioElement | null>(null);
