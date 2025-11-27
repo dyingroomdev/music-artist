@@ -1,7 +1,7 @@
 """add music player settings
 
-Revision ID: 0004_music_player_settings
-Revises: 0003_add_admin_users_and_seo
+Revision ID: 0004
+Revises: 0003
 Create Date: 2025-11-28 05:00:00
 """
 
@@ -11,8 +11,8 @@ from alembic import op
 import sqlalchemy as sa
 
 # revision identifiers, used by Alembic.
-revision = "0004_music_player_settings"
-down_revision = "0003_add_admin_users_and_seo"
+revision = "0004"
+down_revision = "0003"
 branch_labels = None
 depends_on = None
 
