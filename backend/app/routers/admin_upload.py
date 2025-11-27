@@ -4,6 +4,7 @@ from __future__ import annotations
 import os
 from datetime import datetime
 from pathlib import Path
+from typing import Any
 
 from fastapi import APIRouter, Depends, File, HTTPException, UploadFile, Request, status
 from fastapi.responses import JSONResponse
@@ -42,8 +43,8 @@ async def upload_image(
 
 
 @router.get("/media")
-async def list_media(_: str = Depends(get_current_admin_user), request: Request | None = None):
-    base_url = f"{request.url.scheme}://{request.url.netloc}" if request else ""
+async def list_media(request: Request, _: Any = Depends(get_current_admin_user)) -> list[dict[str, Any]]:
+    base_url = f"{request.url.scheme}://{request.url.netloc}"
     files = []
     for item in MEDIA_DIR.iterdir():
         if item.is_file():
@@ -61,7 +62,7 @@ async def list_media(_: str = Depends(get_current_admin_user), request: Request 
 
 
 @router.delete("/media/{filename}")
-async def delete_media(filename: str, _: str = Depends(get_current_admin_user)):
+async def delete_media(filename: str, _: Any = Depends(get_current_admin_user)) -> dict[str, str]:
     safe_name = os.path.basename(filename)
     target = MEDIA_DIR / safe_name
     if not target.exists() or not target.is_file():

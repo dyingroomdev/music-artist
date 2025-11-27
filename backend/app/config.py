@@ -18,7 +18,12 @@ class Settings(BaseSettings):
     ADMIN_USERNAME: str
     ADMIN_PASSWORD_HASH: str | None = None
     ADMIN_PASSWORD: str | None = None
-    BACKEND_CORS_ORIGINS: List[str] = ["http://localhost:5173", "http://localhost:5174"]
+    BACKEND_CORS_ORIGINS: List[str] = [
+        "http://localhost:5173",
+        "http://localhost:5174",
+        "http://155.248.246.208",
+        "https://www.mehreenofficial.com",
+    ]
     SPOTIFY_CLIENT_ID: str | None = None
     SPOTIFY_CLIENT_SECRET: str | None = None
     SPOTIFY_ARTIST_ID: str | None = "1R7tq9CfGc6ohah9L9VGuL"

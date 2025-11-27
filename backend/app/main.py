@@ -15,6 +15,7 @@ app = FastAPI(title=settings.PROJECT_NAME)
 app.add_middleware(
     CORSMiddleware,
     allow_origins=settings.BACKEND_CORS_ORIGINS,
+    allow_origin_regex=r"https?://([a-zA-Z0-9-]+\.)*mehreenofficial\.com(?::\d+)?|http://155\.248\.246\.208(?::\d+)?",
     allow_credentials=True,
     allow_methods=["*"],
     allow_headers=["*"],
