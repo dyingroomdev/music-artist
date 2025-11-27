@@ -77,3 +77,16 @@ class SEOSettings(Base):
     updated_at: Mapped[datetime] = mapped_column(
         DateTime(timezone=True), server_default=func.now(), onupdate=func.now(), nullable=False
     )
+
+
+class MusicPlayerSettings(Base):
+    __tablename__ = "music_player_settings"
+
+    id: Mapped[int] = mapped_column(Integer, primary_key=True, index=True)
+    title: Mapped[str] = mapped_column(String(255), nullable=False, default="She Gaaner Pakhi")
+    artist: Mapped[str] = mapped_column(String(255), nullable=False, default="Mehreen")
+    audio_url: Mapped[Optional[str]] = mapped_column(String(500))
+    cover_url: Mapped[Optional[str]] = mapped_column(String(500))
+    updated_at: Mapped[datetime] = mapped_column(
+        DateTime(timezone=True), server_default=func.now(), onupdate=func.now(), nullable=False
+    )

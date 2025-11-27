@@ -8,7 +8,7 @@ from fastapi.staticfiles import StaticFiles
 from .config import settings
 from pathlib import Path
 
-from .routers import admin_bio, admin_hero, admin_shows, admin_upload, admin_users, auth, bio, hero, shows, spotify, instagram, seo
+from .routers import admin_bio, admin_hero, admin_shows, admin_upload, admin_users, auth, bio, hero, shows, spotify, instagram, seo, music_player
 
 app = FastAPI(title=settings.PROJECT_NAME)
 
@@ -34,6 +34,7 @@ app.include_router(spotify.router, prefix=api_prefix)
 app.include_router(instagram.router, prefix=api_prefix)
 app.include_router(admin_users.router, prefix=api_prefix)
 app.include_router(seo.router, prefix=api_prefix)
+app.include_router(music_player.router, prefix=api_prefix)
 
 media_path = Path(__file__).resolve().parent.parent / "media"
 media_path.mkdir(exist_ok=True)

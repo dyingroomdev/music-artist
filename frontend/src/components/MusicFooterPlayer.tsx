@@ -1,27 +1,37 @@
 // path: frontend/src/components/MusicFooterPlayer.tsx
 import React, { useEffect, useRef, useState } from "react";
-
-// Derive media base from API base (strip trailing /api)
-const apiBase = import.meta.env.VITE_API_BASE_URL?.replace(/\/api\/?$/, "") || "";
-const MEDIA_BASE = `${apiBase}/media`;
-const AUDIO_SRC = `${MEDIA_BASE}/SHE%20GAANER%20PAKHI.mp3`;
-const TRACK_TITLE = "She Gaaner Pakhi";
-const TRACK_ARTIST = "Mehreen";
-const COVER_IMAGE = `${MEDIA_BASE}/cover.heic`;
+import { getMusicPlayer, MusicPlayerSettings } from "../lib/apiClient";
 
 export const MusicFooterPlayer: React.FC = () => {
   const audioRef = useRef<HTMLAudioElement | null>(null);
-  const [playing, setPlaying] = useState(true);
+  const [playing, setPlaying] = useState(false);
   const [progress, setProgress] = useState(0);
   const [duration, setDuration] = useState(0);
   const [volume, setVolume] = useState(0.6);
+  const [track, setTrack] = useState<MusicPlayerSettings | null>(null);
+
+  useEffect(() => {
+    let mounted = true;
+    getMusicPlayer()
+      .then((data) => {
+        if (mounted) {
+          setTrack(data);
+        }
+      })
+      .catch(() => {
+        // fallback: keep null
+      });
+    return () => {
+      mounted = false;
+    };
+  }, []);
 
   useEffect(() => {
     const audio = audioRef.current;
-    if (!audio) return;
+    if (!audio || !track?.audio_url) return;
     audio.volume = volume;
-    audio.play().catch(() => setPlaying(false));
-  }, []);
+    audio.play().then(() => setPlaying(true)).catch(() => setPlaying(false));
+  }, [track, volume]);
 
   const togglePlay = () => {
     const audio = audioRef.current;
@@ -69,13 +79,13 @@ export const MusicFooterPlayer: React.FC = () => {
     <div className="w-full rounded-xl bg-[#04070f] px-5 py-4 shadow-[0_10px_40px_rgba(0,0,0,0.35)] border border-slate-900 text-white flex flex-col md:flex-row md:items-center gap-4">
       <div className="flex items-center gap-3 flex-1">
         <img
-          src={COVER_IMAGE}
+          src={track?.cover_url || "/logo.png"}
           alt="Cover"
           className="h-14 w-14 rounded-md border border-slate-800 object-cover bg-slate-900"
         />
         <div className="flex flex-col">
-          <div className="text-sm font-semibold">{TRACK_TITLE}</div>
-          <div className="text-xs text-slate-300">{TRACK_ARTIST}</div>
+          <div className="text-sm font-semibold">{track?.title || "Audio"}</div>
+          <div className="text-xs text-slate-300">{track?.artist || "Mehreen"}</div>
         </div>
       </div>
       <div className="flex flex-1 items-center gap-3 text-xs text-slate-300">
@@ -120,7 +130,7 @@ export const MusicFooterPlayer: React.FC = () => {
       </div>
       <audio
         ref={audioRef}
-        src={AUDIO_SRC}
+        src={track?.audio_url || ""}
         preload="auto"
         autoPlay
         loop

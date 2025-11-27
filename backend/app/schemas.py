@@ -145,6 +145,31 @@ class SEOSettingsOut(SEOSettingsBase):
     model_config = {"from_attributes": True}
 
 
+class MusicPlayerBase(BaseModel):
+    title: str
+    artist: str
+    audio_url: str | None = None
+    cover_url: str | None = None
+
+
+class MusicPlayerCreate(MusicPlayerBase):
+    pass
+
+
+class MusicPlayerUpdate(BaseModel):
+    title: str | None = None
+    artist: str | None = None
+    audio_url: str | None = None
+    cover_url: str | None = None
+
+
+class MusicPlayerOut(MusicPlayerBase):
+    id: int
+    updated_at: datetime
+
+    model_config = {"from_attributes": True}
+
+
 class Token(BaseModel):
     access_token: str
     token_type: str = "bearer"

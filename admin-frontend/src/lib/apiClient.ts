@@ -70,3 +70,28 @@ export const listMedia = async (): Promise<MediaItem[]> => {
 export const deleteMedia = async (filename: string) => {
   await api.delete(`/admin/media/${encodeURIComponent(filename)}`);
 };
+
+// Music player settings
+export interface MusicPlayerSettings {
+  id: number;
+  title: string;
+  artist: string;
+  audio_url?: string | null;
+  cover_url?: string | null;
+  updated_at: string;
+}
+
+export const getMusicPlayerSettings = async (): Promise<MusicPlayerSettings | null> => {
+  const res = await api.get("/music-player");
+  return res.data;
+};
+
+export const saveMusicPlayerSettings = async (payload: {
+  title?: string;
+  artist?: string;
+  audio_url?: string | null;
+  cover_url?: string | null;
+}) => {
+  const res = await api.put("/music-player", payload);
+  return res.data;
+};

@@ -93,3 +93,17 @@ export const getSeoSettings = async (): Promise<SEOSettings | null> => {
   const res = await api.get<SEOSettings | null>("/seo");
   return res.data;
 };
+
+export interface MusicPlayerSettings {
+  id: number;
+  title: string;
+  artist: string;
+  audio_url?: string | null;
+  cover_url?: string | null;
+  updated_at: string;
+}
+
+export const getMusicPlayer = async (): Promise<MusicPlayerSettings | null> => {
+  const res = await api.get<MusicPlayerSettings | null>("/music-player");
+  return res.data;
+};

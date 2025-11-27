@@ -9,6 +9,7 @@ import ShowsPage from "./pages/ShowsPage";
 import AdminUsersPage from "./pages/AdminUsersPage";
 import SEOPage from "./pages/SEOPage";
 import MediaPage from "./pages/MediaPage";
+import MusicPlayerPage from "./pages/MusicPlayerPage";
 import { isAuthenticated } from "./lib/authClient";
 
 const RequireAuth: React.FC<{ children: React.ReactNode }> = ({ children }) => {
@@ -60,6 +61,14 @@ export const App: React.FC = () => {
           element={
             <RequireAuth>
               <MediaPage />
+            </RequireAuth>
+          }
+        />
+        <Route
+          path="/music-player"
+          element={
+            <RequireAuth>
+              <MusicPlayerPage />
             </RequireAuth>
           }
         />
