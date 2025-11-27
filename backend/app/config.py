@@ -22,6 +22,8 @@ class Settings(BaseSettings):
         "http://localhost:5173",
         "http://localhost:5174",
         "http://155.248.246.208",
+        "http://155.248.246.208:9011",
+        "http://155.248.246.208:9012",
         "https://www.mehreenofficial.com",
     ]
     SPOTIFY_CLIENT_ID: str | None = None
